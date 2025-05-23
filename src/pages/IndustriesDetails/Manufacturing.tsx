@@ -22,10 +22,9 @@ import {
   Factory, // Specific icon
 } from "lucide-react";
 
-import UnifiedNavbar from "../../components/UnifiedNavbar"; // Adjust path if needed
-import Footer from "../../components/Footer"; // Adjust path if needed
+import UnifiedNavbar from "../../components/UnifiedNavbar";
+import Footer from "../../components/Footer"; // Assuming you might want to re-enable this
 import { Button } from "@/components/ui/button";
-// import { AspectRatio } from "@/components/ui/aspect-ratio"; // Not used in this specific layout, can remove
 
 // --- ANIMATION VARIANTS ---
 const fadeIn = {
@@ -47,7 +46,7 @@ const industryInfo = {
   tagline:
     "Engineering Smart Factories and Connected Ecosystems for Peak Manufacturing Performance and Efficiency.",
   imageUrl:
-    "https://images.unsplash.com/photo-1560574128-39add1e0dba1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bWFudWZhY3R1cmluZyUyMGlvdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=1200&q=80", // You can use your I7 import here
+    "https://images.unsplash.com/photo-1560574128-39add1e0dba1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bWFudWZhY3R1cmluZyUyMGlvdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=1200&q=80",
   overviewDescription:
     "We are dedicated to driving efficiency, innovation, and resilience in the manufacturing sector through Industry 4.0 solutions. Our expertise in the Internet of Things (IoT), Artificial Intelligence (AI), and data analytics helps manufacturers optimize production processes, significantly reduce operational costs, and build smarter, more responsive factories.",
   detailedPoints: [
@@ -86,7 +85,7 @@ const industryInfo = {
       description:
         "Creating dynamic virtual replicas of physical assets, production lines, or entire factories for simulation, analysis, and operational optimization.",
       icon: Users,
-    }, // Users icon can represent a 'digital human' or system replica
+    },
     {
       title: "AI for Quality Control (QC)",
       description:
@@ -137,8 +136,17 @@ const industryInfo = {
       "Smart Factory Transformation Achieves 25% OEE Increase for 'Precision Parts Inc.'",
     excerpt:
       "Discover how our comprehensive IIoT and AI-driven predictive maintenance solution significantly increased Overall Equipment Effectiveness (OEE) by 25% and reduced critical machinery downtime by 40% for Precision Parts Inc., a leading automotive component manufacturer.",
-    link: "/case-studies/precision-parts-smart-factory-iot", // Example link
+    link: "/case-studies/precision-parts-smart-factory-iot",
   },
+  // Added for sidebar content
+  whyPartnerPoints: [
+    "Extensive expertise in Industrial IoT (IIoT) and smart factory automation.",
+    "Strong focus on operational technology (OT) and ICS cybersecurity.",
+    "Development of scalable, resilient, and future-proof manufacturing solutions.",
+    "Data-driven approach to optimize production and supply chain processes.",
+    "End-to-end project lifecycle management, from ideation to support.",
+    "Commitment to helping manufacturers achieve Industry 4.0 excellence.",
+  ],
 };
 
 const ManufacturingDetailPage: React.FC = () => {
@@ -148,52 +156,54 @@ const ManufacturingDetailPage: React.FC = () => {
   }, []);
 
   const IndustryIcon = industryInfo.icon;
+  const industryNameShort = industryInfo.name.split("&")[0].trim(); // For "Manufacturing"
 
   return (
     <div className="bg-slate-950 text-slate-300 min-h-screen antialiased flex flex-col">
       <UnifiedNavbar />
       <main className="flex-grow">
-        {/* --- BANNER SECTION --- */}
+        {/* --- BANNER SECTION (Height Reduced & Enhanced) --- */}
         <motion.section
-          className="relative pt-32 pb-20 md:pt-40 md:pb-28 lg:pt-48 lg:pb-36 text-white overflow-hidden"
+          className="relative pt-20 pb-12 md:pt-28 md:pb-16 lg:pt-30 lg:pb-18 text-white overflow-hidden"
           initial="hidden"
           animate="visible"
           variants={fadeIn}
         >
           <div className="absolute inset-0 z-0">
             <img
-              src={industryInfo.imageUrl} // Use I7 if imported: src={I7}
+              src={industryInfo.imageUrl}
               alt={`${industryInfo.name} industry background`}
               className="w-full h-full object-cover opacity-20 blur-sm"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/70 to-sky-900/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-950/80 to-orange-900/30"></div>{" "}
+            {/* Adjusted gradient to orange for manufacturing/industrial */}
           </div>
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5"></div>
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
-              className="max-w-4xl mx-auto text-center"
+              className="max-w-3xl mx-auto text-center"
               variants={staggerContainer}
             >
-              <motion.div variants={fadeIn} className="mb-4">
-                <IndustryIcon className="w-16 h-16 text-cyan-400 mx-auto" />
+              <motion.div variants={fadeIn} className="mb-3">
+                <IndustryIcon className="w-12 h-12 md:w-14 md:h-14 text-cyan-400 mx-auto" />
               </motion.div>
               <motion.h1
                 variants={fadeIn}
-                className="text-4xl sm:text-5xl lg:text-7xl font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500"
+                className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500"
               >
                 {industryInfo.name}
               </motion.h1>
               <motion.p
                 variants={fadeIn}
-                className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
+                className="text-md md:text-lg text-slate-300/90 max-w-xl mx-auto leading-relaxed"
               >
                 {industryInfo.tagline}
               </motion.p>
-              <motion.div variants={fadeIn} className="mt-8">
+              <motion.div variants={fadeIn} className="mt-6">
                 <Button
                   size="lg"
                   onClick={() => navigate("/contact")}
-                  className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
+                  className="bg-gradient-to-r from-cyan-500 to-sky-600 hover:from-cyan-600 hover:to-sky-700 text-white font-semibold shadow-lg hover:shadow-sky-500/40 transition-all duration-300 transform hover:scale-105 px-8 py-3"
                 >
                   Optimize Your Manufacturing{" "}
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -213,13 +223,12 @@ const ManufacturingDetailPage: React.FC = () => {
           >
             {/* --- LEFT/MAIN CONTENT AREA --- */}
             <motion.div className="lg:col-span-8 space-y-16" variants={fadeIn}>
-              {/* Overview Section */}
               <motion.section variants={fadeIn}>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 pb-3 border-b-2 border-cyan-500/40 flex items-center">
-                  <Layers className="w-8 h-8 mr-3 text-cyan-400" />
-                  Revolutionizing {industryInfo.name}
+                  <Layers className="w-8 h-8 mr-3 text-cyan-400 shrink-0" />
+                  Revolutionizing {industryNameShort}
                 </h2>
-                <div className="prose prose-lg prose-invert max-w-none text-slate-300/90 leading-relaxed space-y-5">
+                <div className="prose prose-lg prose-slate dark:prose-invert max-w-none text-slate-300/90 leading-relaxed space-y-5">
                   <p>{industryInfo.overviewDescription}</p>
                   {industryInfo.detailedPoints.map((point, index) => (
                     <p key={index}>{point}</p>
@@ -227,28 +236,29 @@ const ManufacturingDetailPage: React.FC = () => {
                 </div>
               </motion.section>
 
-              {/* Key Solutions Section */}
               <motion.section variants={fadeIn}>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 pb-3 border-b-2 border-cyan-500/40 flex items-center">
-                  <Zap className="w-8 h-8 mr-3 text-cyan-400" /> Our Key{" "}
-                  {industryInfo.name.split("&")[0].trim()} Solutions
+                  <Zap className="w-8 h-8 mr-3 text-cyan-400 shrink-0" /> Our
+                  Key {industryNameShort} Solutions
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                   {industryInfo.keySolutions.map((solution, index) => {
                     const SolutionIcon = solution.icon;
                     return (
                       <motion.div
                         key={index}
                         variants={fadeIn}
-                        className="bg-slate-800/60 border border-slate-700/70 rounded-xl p-6 shadow-lg hover:border-cyan-500/60 transition-colors"
+                        className="group bg-slate-800/50 border border-slate-700/60 rounded-xl p-6 shadow-lg hover:border-cyan-500/70 hover:bg-slate-700/70 hover:shadow-cyan-500/20 transition-all duration-300 ease-in-out transform hover:-translate-y-1"
                       >
-                        <div className="flex items-center mb-3">
-                          <SolutionIcon className="w-7 h-7 text-emerald-400 mr-3 shrink-0" />
-                          <h3 className="text-xl font-semibold text-cyan-300">
+                        <div className="flex items-start mb-3">
+                          <div className="bg-slate-700/50 group-hover:bg-cyan-500/20 p-2.5 rounded-lg mr-4 transition-colors duration-300">
+                            <SolutionIcon className="w-6 h-6 text-emerald-400 group-hover:text-cyan-300 transition-colors duration-300 shrink-0" />
+                          </div>
+                          <h3 className="text-xl font-semibold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 mt-1">
                             {solution.title}
                           </h3>
                         </div>
-                        <p className="text-sm text-slate-400/90 leading-relaxed">
+                        <p className="text-sm text-slate-400/80 leading-relaxed">
                           {solution.description}
                         </p>
                       </motion.div>
@@ -257,57 +267,55 @@ const ManufacturingDetailPage: React.FC = () => {
                 </div>
               </motion.section>
 
-              {/* Challenges & Benefits Section */}
               <motion.section
                 variants={fadeIn}
-                className="grid md:grid-cols-2 gap-10"
+                className="grid md:grid-cols-2 gap-x-10 gap-y-12"
               >
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-2 border-b border-red-500/40 flex items-center">
-                    <Target className="w-7 h-7 mr-3 text-red-400" />{" "}
-                    Manufacturing Hurdles We Overcome
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-2.5 border-b border-red-500/50 flex items-center">
+                    <Target className="w-7 h-7 mr-3 text-red-400 shrink-0" />{" "}
+                    {industryNameShort} Hurdles We Overcome
                   </h2>
-                  <ul className="space-y-3">
+                  <ul className="space-y-3.5">
                     {industryInfo.challenges.map((challenge, index) => (
                       <motion.li
                         key={index}
                         variants={fadeIn}
                         className="flex items-start"
                       >
-                        <CheckCircle className="w-5 h-5 text-red-400/80 mr-2.5 mt-1 shrink-0" />
-                        <span className="text-slate-300">{challenge}</span>
+                        <CheckCircle className="w-5 h-5 text-red-400/70 mr-3 mt-0.5 shrink-0" />
+                        <span className="text-slate-300/90">{challenge}</span>
                       </motion.li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-2 border-b border-emerald-500/40 flex items-center">
-                    <ThumbsUp className="w-7 h-7 mr-3 text-emerald-400" />{" "}
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-2.5 border-b border-emerald-500/50 flex items-center">
+                    <ThumbsUp className="w-7 h-7 mr-3 text-emerald-400 shrink-0" />{" "}
                     Tangible Benefits We Provide
                   </h2>
-                  <ul className="space-y-3">
+                  <ul className="space-y-3.5">
                     {industryInfo.benefits.map((benefit, index) => (
                       <motion.li
                         key={index}
                         variants={fadeIn}
                         className="flex items-start"
                       >
-                        <CheckCircle className="w-5 h-5 text-emerald-400/80 mr-2.5 mt-1 shrink-0" />
-                        <span className="text-slate-300">{benefit}</span>
+                        <CheckCircle className="w-5 h-5 text-emerald-400/70 mr-3 mt-0.5 shrink-0" />
+                        <span className="text-slate-300/90">{benefit}</span>
                       </motion.li>
                     ))}
                   </ul>
                 </div>
               </motion.section>
 
-              {/* Case Study Teaser Section */}
               {industryInfo.caseStudy && (
                 <motion.section variants={fadeIn}>
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 pb-3 border-b-2 border-cyan-500/40 flex items-center">
-                    <FileText className="w-8 h-8 mr-3 text-cyan-400" /> Success
-                    in {industryInfo.name.split("&")[0].trim()}
+                    <FileText className="w-8 h-8 mr-3 text-cyan-400 shrink-0" />{" "}
+                    Success in {industryNameShort}
                   </h2>
-                  <div className="bg-gradient-to-r from-sky-800/30 to-emerald-800/30 p-8 rounded-xl shadow-xl border border-sky-700/50">
+                  <div className="bg-gradient-to-br from-sky-800/50 via-slate-800/40 to-emerald-800/50 p-8 rounded-xl shadow-2xl border border-sky-600/50 hover:border-sky-500 transition-colors">
                     <h3 className="text-2xl font-semibold text-white mb-3">
                       {industryInfo.caseStudy.title}
                     </h3>
@@ -316,7 +324,7 @@ const ManufacturingDetailPage: React.FC = () => {
                     </p>
                     <Button
                       asChild
-                      className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
+                      className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     >
                       <Link to={industryInfo.caseStudy.link}>
                         Explore the Transformation{" "}
@@ -328,34 +336,30 @@ const ManufacturingDetailPage: React.FC = () => {
               )}
             </motion.div>
 
-            {/* --- RIGHT SIDEBAR --- */}
+            {/* --- RIGHT SIDEBAR (Enhanced) --- */}
             <motion.aside
-              className="lg:col-span-4 space-y-10 sticky top-24 self-start"
+              className="lg:col-span-4 space-y-8 sticky top-24 self-start"
               variants={fadeIn}
             >
-              <div className="bg-slate-800/70 p-6 rounded-xl border border-slate-700/60 shadow-lg backdrop-blur-sm">
+              <div className="bg-slate-800/60 p-6 rounded-xl border border-slate-700/50 shadow-lg backdrop-blur-sm hover:border-slate-600/70 transition-colors">
                 <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
-                  <Lightbulb className="w-6 h-6 mr-3 text-cyan-400" /> Why Us
-                  for Industry 4.0?
+                  <Lightbulb className="w-6 h-6 mr-3 text-cyan-400 shrink-0" />{" "}
+                  Why Us for Industry 4.0?
                 </h3>
-                <ul className="space-y-3.5 text-sm text-slate-400">
-                  {[
-                    "Deep IIoT & automation expertise.",
-                    "Strong focus on OT/ICS cybersecurity.",
-                    "Scalable and future-proof smart factory solutions.",
-                    "Data-driven approach for operational insights.",
-                    "End-to-end project management and support.",
-                  ].map((point, index) => (
+                <ul className="space-y-3 text-sm text-slate-300/95">
+                  {industryInfo.whyPartnerPoints.map((point, index) => (
                     <li key={index} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 mr-2 shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-emerald-400/90 mr-2.5 shrink-0" />
                       {point}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-gradient-to-br from-emerald-600/70 to-sky-600/80 p-8 rounded-xl border border-sky-500/50 text-center shadow-2xl backdrop-blur-sm">
-                <MessageSquare className="w-12 h-12 text-sky-200 mx-auto mb-5" />
+              <div className="bg-gradient-to-br from-emerald-700/80 via-sky-700/80 to-orange-800/80 p-8 rounded-xl border border-transparent hover:border-sky-400/70 text-center shadow-2xl backdrop-blur-sm transition-all duration-300 group">
+                {" "}
+                {/* Adjusted gradient */}
+                <MessageSquare className="w-12 h-12 text-sky-100 group-hover:text-white mx-auto mb-5 transition-colors duration-300 transform group-hover:scale-110" />
                 <h3 className="text-2xl font-bold text-white mb-3">
                   Ready to Build Your Smart Factory?
                 </h3>
@@ -367,22 +371,22 @@ const ManufacturingDetailPage: React.FC = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="w-full bg-white text-sky-700 hover:bg-sky-100 font-semibold transition-all duration-300 transform hover:scale-105 focus:ring-4 focus:ring-sky-300"
+                  className="w-full bg-white text-sky-700 hover:bg-sky-50 font-semibold transition-all duration-300 transform hover:scale-105 focus:ring-4 focus:ring-sky-300/70 shadow-md hover:shadow-lg"
                 >
                   <Link to="/contact">Schedule a Demo</Link>
                 </Button>
               </div>
 
-              <div className="bg-slate-800/70 p-6 rounded-xl border border-slate-700/60 shadow-lg backdrop-blur-sm">
+              <div className="bg-slate-800/60 p-6 rounded-xl border border-slate-700/50 shadow-lg backdrop-blur-sm hover:border-slate-600/70 transition-colors">
                 <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
-                  <Cpu className="w-6 h-6 mr-3 text-cyan-400" /> Key
+                  <Cpu className="w-6 h-6 mr-3 text-cyan-400 shrink-0" /> Key
                   Manufacturing Technologies
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2.5">
                   {industryInfo.relevantTechnologies.map((tech) => (
                     <span
                       key={tech}
-                      className="bg-slate-700 text-cyan-300 px-3 py-1.5 rounded-full text-xs font-medium border border-slate-600"
+                      className="bg-slate-700/80 text-cyan-300/90 px-3.5 py-2 rounded-lg text-xs font-medium border border-slate-600/70 hover:bg-slate-600/80 hover:text-cyan-200 hover:border-slate-500 transition-all duration-200 cursor-default"
                     >
                       {tech}
                     </span>
@@ -393,7 +397,7 @@ const ManufacturingDetailPage: React.FC = () => {
           </motion.div>
         </div>
       </main>
-      {/* <Footer /> */}
+      {/* <Footer />  */}
     </div>
   );
 };
