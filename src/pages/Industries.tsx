@@ -132,7 +132,7 @@ const industriesData: Industry[] = [
       "Optimizing manufacturing with smart factory innovations, IoT integration, and AI-driven efficiency.",
   },
   {
-    id: "realstate",
+    id: "realestate",
     name: "Real Estate & PropTech",
     icon: Building,
     description:
@@ -354,7 +354,7 @@ const IndustriesPage: React.FC = () => {
           </div>
         </motion.section>
       </main>
-      <Footer /> {/* Uncommented Footer, assuming it's desired */}
+      {/* <Footer />  */}
     </div>
   );
 };
