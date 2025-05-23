@@ -401,7 +401,7 @@ const FinanceDetailPage: React.FC = () => {
           </motion.div>
         </div>
       </main>
-      <Footer /> {/* Re-enabled Footer */}
+{/*       <Footer />  */}
     </div>
   );
 };
