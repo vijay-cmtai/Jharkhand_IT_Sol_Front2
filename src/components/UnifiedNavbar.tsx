@@ -35,6 +35,7 @@ import {
   Loader2,
   Menu,
   X,
+  Home as HomeIcon, // Import Home icon
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-// --- INTERFACES ---
+// --- INTERFACES --- (Keep as is)
 interface BackendSubService {
   _id: string;
   name: string;
@@ -87,6 +88,7 @@ const API_SERVICES_URL =
   "https://jharkhand-it-sol-back1.onrender.com/services/find";
 const API_BASE_URL = "https://jharkhand-it-sol-back1.onrender.com";
 
+// --- HELPER FUNCTIONS (Keep as is) ---
 const getCategoryIcon = (slugOrName: string): React.ReactElement => {
   const lowerSlugOrName = slugOrName.toLowerCase();
   if (
@@ -260,7 +262,7 @@ const UnifiedNavbar: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [isServicesDropdownVisible, activeMobileDropdown, hoveredService]); // Added hoveredService dependency
+  }, [isServicesDropdownVisible, activeMobileDropdown, hoveredService]);
 
   useEffect(() => {
     if (
@@ -365,8 +367,9 @@ const UnifiedNavbar: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             <Link
               to="/"
-              className="text-white hover:text-cyan-400 transition-colors font-medium"
+              className="text-white hover:text-cyan-400 transition-colors font-medium flex items-center" // Added flex items-center
             >
+              <HomeIcon size={16} className="mr-1.5" /> {/* Added HomeIcon */}
               Home
             </Link>
             <Link
@@ -655,7 +658,6 @@ const UnifiedNavbar: React.FC = () => {
                 )}
               </AnimatePresence>
             </div>
-            {/* ***** CHANGE 1: Corrected Desktop "Industries" Link Styling ***** */}
             <Link
               to="/industries"
               className="text-white hover:text-cyan-400 transition-colors font-medium"
@@ -812,12 +814,13 @@ const UnifiedNavbar: React.FC = () => {
           >
             <div className="container mx-auto px-4 py-3">
               <div className="flex flex-col space-y-2.5">
-                {/* Standard Mobile Links */}
                 <Link
                   to="/"
-                  className="text-white hover:text-cyan-400 py-2.5"
+                  className="text-white hover:text-cyan-400 py-2.5 flex items-center" // Added flex items-center
                   onClick={closeMobileMenu}
                 >
+                  <HomeIcon size={18} className="mr-2 text-cyan-500" />{" "}
+                  {/* Added HomeIcon */}
                   Home
                 </Link>
                 <Link
@@ -895,7 +898,6 @@ const UnifiedNavbar: React.FC = () => {
                   </AnimatePresence>
                 </div>
 
-                {/* ***** CHANGE 2: Added "Industries" Link to Mobile Menu ***** */}
                 <Link
                   to="/industries"
                   className="text-white hover:text-cyan-400 py-2.5"
