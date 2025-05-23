@@ -395,7 +395,7 @@ const RealEstateDetailPage: React.FC = () => {
           </motion.div>
         </div>
       </main>
-      <Footer /> {/* Re-enabled Footer */}
+{/*       <Footer />  */}
     </div>
   );
 };
