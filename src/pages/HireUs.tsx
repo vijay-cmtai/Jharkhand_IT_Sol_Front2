@@ -107,7 +107,7 @@ const HireUs = () => {
     },
     {
       title: "Staff Augmentation",
-      icon: <UserCheck size={32} className={`text-${jisBlue}`} />,
+      icon: <UserCheck size={32} className={`text-${jisPurple}`} />,
       description:
         "Enhance your existing in-house team by integrating our skilled professionals to fill specific skill gaps, accelerate development, and boost overall project capacity when you need it most.",
       features: [
@@ -118,11 +118,11 @@ const HireUs = () => {
         "Rapid Onboarding Process",
       ],
       ctaPath: "/contact?model=staff-augmentation",
-      accentColor: jisBlue,
+      accentColor: jisPurple,
     },
     {
       title: "Project-Based Engagement",
-      icon: <FileText size={32} className={`text-${jisTeal}`} />,
+      icon: <FileText size={32} className={`text-${jisPurple}`} />,
       description:
         "Entrust us with specific projects defined by a clear scope, fixed timeline, and predetermined budget. We take full ownership to deliver predictable outcomes and high-quality results.",
       features: [
@@ -133,7 +133,7 @@ const HireUs = () => {
         "Guaranteed Deliverables",
       ],
       ctaPath: "/contact?model=project-based",
-      accentColor: jisTeal,
+      accentColor: jisPurple,
     },
   ];
 
