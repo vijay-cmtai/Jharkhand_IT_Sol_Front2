@@ -1,4 +1,4 @@
-// src/pages/industrydetails/FinanceDetailPage.tsx
+// src/pages/industrydetails/HealthcareDetailPage.tsx
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -19,13 +19,14 @@ import {
   Lightbulb,
   Award,
   ArrowRight,
-  DollarSign, // Specific icon
+  HeartPulse,
+  Briefcase,
+  Link as LinkIcon,
 } from "lucide-react";
 
 import UnifiedNavbar from "../../components/UnifiedNavbar";
-import Footer from "../../components/Footer"; // Assuming you might want to re-enable this
+import Footer from "../../components/Footer";
 import { Button } from "@/components/ui/button";
-// import { AspectRatio } from "@/components/ui/aspect-ratio"; // Commented out as not used
 
 // --- ANIMATION VARIANTS ---
 const fadeIn = {
@@ -40,131 +41,143 @@ const staggerContainer = {
   },
 };
 
-// --- PAGE SPECIFIC DATA ---
+// --- PAGE SPECIFIC DATA (Same as before, ensure it's complete) ---
 const industryInfo = {
-  name: "Banking & Finance (FinTech)",
-  icon: DollarSign,
+  name: "Healthcare & Life Sciences",
+  icon: HeartPulse,
   tagline:
-    "Architecting the Future of Finance with Secure and Innovative FinTech Solutions.",
+    "Pioneering Digital Transformation in Healthcare for Enhanced Patient Outcomes.",
   imageUrl:
-    "https://images.unsplash.com/photo-1600979990900-92fab73c6939?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZpbnRlY2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aGVhbHRoY2FyZSUyMHRlY2hub2xvZ3l8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1200&q=80",
   overviewDescription:
-    "We are at the forefront of transforming financial services, empowering banks, insurance companies, and FinTech startups with secure, agile, and customer-centric digital solutions. Our expertise helps clients navigate the complex and evolving financial landscape.",
+    "We are dedicated to empowering healthcare providers and life science organizations with innovative technology. Our mission is to improve patient outcomes, streamline complex operations, and accelerate critical research through secure, compliant, and scalable digital solutions specifically tailored to the unique demands of the modern healthcare industry.",
   detailedPoints: [
-    "Our FinTech solutions are built on a foundation of robust security, regulatory compliance, and cutting-edge technology to address the unique challenges of the financial sector.",
-    "We specialize in developing next-generation digital banking platforms, AI-driven fraud detection systems, seamless payment gateway integrations, and innovative blockchain applications.",
-    "By fostering a culture of continuous innovation, we help financial institutions enhance customer experiences, optimize operational efficiency, and gain a competitive edge in a rapidly changing market.",
-    "Our approach involves a deep understanding of financial workflows, risk management, and the importance of data integrity to deliver solutions that are both powerful and trustworthy.",
+    "Our commitment involves a multi-faceted approach, leveraging AI, IoT, and data analytics to address critical sector challenges.",
+    "From enhancing diagnostic accuracy with AI-powered tools to enabling remote patient care via robust telemedicine platforms, our solutions prioritize interoperability, security, and user-friendliness.",
+    "We possess a deep understanding of the stringent regulatory environment (e.g., HIPAA, HITECH, GDPR) and ensure all our solutions meet the highest standards of data privacy and security.",
+    "We aim to foster a more connected, efficient, and patient-centric healthcare ecosystem through continuous innovation.",
   ],
   keySolutions: [
     {
-      title: "Digital Banking Platforms",
+      title: "EHR/EMR Systems",
       description:
-        "Comprehensive solutions for online and mobile banking, account management, and customer self-service.",
-      icon: Cpu,
-    },
-    {
-      title: "Payment Processing & Gateways",
-      description:
-        "Secure and efficient payment gateway integrations, including real-time payments and cross-border transactions.",
-      icon: Zap,
-    },
-    {
-      title: "AI for Fraud & Risk",
-      description:
-        "Advanced AI/ML models for real-time fraud detection, credit risk assessment, and AML compliance.",
-      icon: ShieldCheck,
-    },
-    {
-      title: "Blockchain & DLT",
-      description:
-        "Development of decentralized applications (dApps), smart contracts, and solutions for secure asset tokenization and trade finance.",
-      icon: Layers,
-    },
-    {
-      title: "Regulatory Technology (RegTech)",
-      description:
-        "Automated solutions for regulatory reporting, KYC/AML compliance, and transaction monitoring.",
+        "Custom development, integration, and optimization of Electronic Health/Medical Record systems for seamless data management.",
       icon: FileText,
     },
     {
-      title: "WealthTech & Robo-Advisory",
+      title: "Telemedicine Platforms",
       description:
-        "Platforms for automated investment advice, portfolio management, and personalized financial planning.",
+        "Secure and scalable platforms for remote consultations, patient monitoring, and virtual care delivery.",
+      icon: MessageSquare,
+    },
+    {
+      title: "AI in Diagnostics",
+      description:
+        "AI-powered medical imaging analysis and diagnostic support tools to improve accuracy and speed.",
+      icon: Cpu,
+    },
+    {
+      title: "Patient Engagement",
+      description:
+        "Interactive patient portals, mobile health apps, and digital tools to enhance patient involvement in their care.",
+      icon: Users,
+    },
+    {
+      title: "Regulatory Compliance",
+      description:
+        "Solutions and consultancy to meet HIPAA, GDPR, HITECH, and other healthcare data regulations.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Clinical Trial Tech",
+      description:
+        "Software for efficient clinical trial management, data collection, and research acceleration.",
+      icon: Layers,
+    },
+    {
+      title: "Healthcare Analytics",
+      description:
+        "Big data analytics and business intelligence for population health management and operational insights.",
       icon: BarChart3,
     },
     {
-      title: "InsurTech Solutions",
+      title: "IoT & Smart Hospitals",
       description:
-        "Digital platforms for insurance underwriting, claims processing, policy management, and customer engagement.",
-      icon: ThumbsUp,
-    },
-    {
-      title: "Open Banking & APIs",
-      description:
-        "Developing secure API ecosystems to enable third-party integrations and foster innovation in financial services.",
-      icon: MessageSquare,
+        "Implementing IoT for smart medical devices, wearables, and connected hospital environments.",
+      icon: Zap,
     },
   ],
   challenges: [
-    "Navigating complex and ever-changing regulatory landscapes (e.g., PSD2, GDPR, CCPA).",
-    "Combating sophisticated cybersecurity threats and ensuring data protection.",
-    "Meeting evolving customer expectations for seamless digital experiences.",
-    "Integrating legacy systems with modern FinTech innovations.",
-    "Managing vast amounts of financial data for insights and risk management.",
-    "The rapid pace of technological disruption and competition from new entrants.",
+    "Fragmented data systems hindering interoperability.",
+    "Increasing regulatory complexities and compliance burdens.",
+    "Need for enhanced patient engagement and personalized care.",
+    "Rising operational costs and demand for efficiency.",
+    "Ensuring robust data security and patient privacy (PHI).",
+    "Integrating new technologies into existing clinical workflows.",
   ],
   benefits: [
-    "Enhanced operational efficiency through automation and streamlined processes.",
-    "Improved customer acquisition, engagement, and retention via superior digital experiences.",
-    "Strengthened security posture and reduced risk of fraud and cyberattacks.",
-    "Greater agility to adapt to market changes and launch new products quickly.",
-    "Data-driven decision-making for better risk management and personalized services.",
-    "Compliance with regulatory requirements, minimizing penalties and reputational damage.",
+    "Improved patient outcomes via data-driven insights.",
+    "Enhanced operational efficiency and reduced administrative tasks.",
+    "Greater accessibility to care, especially for remote areas.",
+    "Streamlined research and development cycles for new treatments.",
+    "Robust security and unwavering compliance adherence.",
+    "Empowered patients through better information access.",
   ],
   relevantTechnologies: [
     "AI/ML",
+    "Cloud (AWS, Azure, GCP)",
+    "IoT",
+    "Big Data",
+    "FHIR/HL7",
+    "Telehealth SDKs",
+    "Cybersecurity",
     "Blockchain",
-    "Cloud Computing (AWS, Azure)",
-    "Microservices",
-    "API Gateways",
-    "Cybersecurity Tools",
-    "Big Data Analytics",
-    "DevSecOps",
   ],
   caseStudy: {
-    title: "Revolutionizing Digital Banking for Global Finance Corp",
+    title: "Transforming Patient Care at City General Hospital",
     excerpt:
-      "Learn how our custom digital banking platform enabled Global Finance Corp to increase customer engagement by 40% and reduce operational costs significantly.",
-    link: "/case-studies/global-finance-corp-fintech",
+      "Discover how our integrated digital health platform revolutionized patient management, reduced wait times by 30%, and improved diagnostic accuracy at City General Hospital.",
+    link: "/case-studies/city-general-hospital-healthcare",
   },
-  // Added for sidebar content
-  whyPartnerPoints: [
-    "Unparalleled expertise in FinTech domain and regulatory nuances.",
-    "Steadfast commitment to security, compliance, and data integrity.",
-    "Agile development of future-ready, scalable financial solutions.",
-    "True collaborative partnership model focused on your success.",
-    "Proven track record of delivering transformative FinTech projects.",
-    "Dedicated to customer-centric innovation in the financial sector.",
+  relatedServices: [
+    {
+      name: "Custom Software Development",
+      link: "/services/custom-software-development",
+      icon: Layers,
+    },
+    {
+      name: "Cloud Solutions for Healthcare",
+      link: "/services/cloud-solutions",
+      icon: Cpu,
+    },
+    {
+      name: "Data Analytics & BI",
+      link: "/services/data-analytics",
+      icon: BarChart3,
+    },
+    {
+      name: "Cybersecurity Services",
+      link: "/services/cybersecurity",
+      icon: ShieldCheck,
+    },
   ],
 };
 
-const FinanceDetailPage: React.FC = () => {
+const HealthcareDetailPage: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const IndustryIcon = industryInfo.icon;
-  const industryNameShort = industryInfo.name.split("(")[0].trim(); // For concise titles
 
   return (
     <div className="bg-slate-950 text-slate-300 min-h-screen antialiased flex flex-col">
       <UnifiedNavbar />
       <main className="flex-grow">
-        {/* --- BANNER SECTION (Height Reduced & Enhanced) --- */}
+        {/* --- BANNER SECTION (Height Further Reduced) --- */}
         <motion.section
-          className="relative pt-20 pb-12 md:pt-28 md:pb-16 lg:pt-30 lg:pb-18 text-white overflow-hidden"
+          className="relative pt-20 pb-12 md:pt-28 md:pb-16 lg:pt-30 lg:pb-18 text-white overflow-hidden" // Further reduced padding
           initial="hidden"
           animate="visible"
           variants={fadeIn}
@@ -172,41 +185,45 @@ const FinanceDetailPage: React.FC = () => {
           <div className="absolute inset-0 z-0">
             <img
               src={industryInfo.imageUrl}
-              alt={`${industryInfo.name} background`}
-              className="w-full h-full object-cover opacity-20 blur-sm"
+              alt={`${industryInfo.name} industry background`}
+              className="w-full h-full object-cover opacity-20 blur-sm" // Adjusted opacity/blur
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-950/80 to-green-900/30"></div>{" "}
-            {/* Adjusted gradient to green for finance */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-950/80 to-sky-900/50"></div>{" "}
+            {/* Darker gradient */}
           </div>
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5"></div>
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
-              className="max-w-3xl mx-auto text-center"
+              className="max-w-3xl mx-auto text-center" // Slightly reduced max-w for tighter feel
               variants={staggerContainer}
             >
               <motion.div variants={fadeIn} className="mb-3">
-                <IndustryIcon className="w-12 h-12 md:w-14 md:h-14 text-cyan-400 mx-auto" />
+                {" "}
+                {/* Reduced margin */}
+                <IndustryIcon className="w-12 h-12 md:w-14 md:h-14 text-cyan-400 mx-auto" />{" "}
+                {/* Slightly smaller icon */}
               </motion.div>
               <motion.h1
                 variants={fadeIn}
-                className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500"
+                className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500" // Reduced font size
               >
                 {industryInfo.name}
               </motion.h1>
               <motion.p
                 variants={fadeIn}
-                className="text-md md:text-lg text-slate-300/90 max-w-xl mx-auto leading-relaxed"
+                className="text-md md:text-lg text-slate-300/90 max-w-xl mx-auto leading-relaxed" // Reduced font size & max-w
               >
                 {industryInfo.tagline}
               </motion.p>
               <motion.div variants={fadeIn} className="mt-6">
+                {" "}
+                {/* Reduced margin */}
                 <Button
-                  size="lg"
+                  size="lg" // Keep size lg for prominence
                   onClick={() => navigate("/contact")}
-                  className="bg-gradient-to-r from-cyan-500 to-sky-600 hover:from-cyan-600 hover:to-sky-700 text-white font-semibold shadow-lg hover:shadow-sky-500/40 transition-all duration-300 transform hover:scale-105 px-8 py-3"
+                  className="bg-gradient-to-r from-cyan-500 to-sky-600 hover:from-cyan-600 hover:to-sky-700 text-white font-semibold shadow-lg hover:shadow-sky-500/40 transition-all duration-300 transform hover:scale-105 px-8 py-3" // Enhanced button style
                 >
-                  Discuss Your FinTech Project{" "}
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  Discuss Your Project <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </motion.div>
             </motion.div>
@@ -223,10 +240,11 @@ const FinanceDetailPage: React.FC = () => {
           >
             {/* --- LEFT/MAIN CONTENT AREA --- */}
             <motion.div className="lg:col-span-8 space-y-16" variants={fadeIn}>
+              {/* Overview Section */}
               <motion.section variants={fadeIn}>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 pb-3 border-b-2 border-cyan-500/40 flex items-center">
                   <Layers className="w-8 h-8 mr-3 text-cyan-400 shrink-0" />
-                  Empowering {industryNameShort}
+                  Advancing {industryInfo.name}
                 </h2>
                 <div className="prose prose-lg prose-slate dark:prose-invert max-w-none text-slate-300/90 leading-relaxed space-y-5">
                   <p>{industryInfo.overviewDescription}</p>
@@ -236,12 +254,15 @@ const FinanceDetailPage: React.FC = () => {
                 </div>
               </motion.section>
 
+              {/* Key Solutions Section */}
               <motion.section variants={fadeIn}>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 pb-3 border-b-2 border-cyan-500/40 flex items-center">
                   <Zap className="w-8 h-8 mr-3 text-cyan-400 shrink-0" /> Our
-                  Key {industryNameShort} Solutions
+                  Key {industryInfo.name} Solutions
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                  {" "}
+                  {/* Increased gap-y */}
                   {industryInfo.keySolutions.map((solution, index) => {
                     const SolutionIcon = solution.icon;
                     return (
@@ -251,10 +272,14 @@ const FinanceDetailPage: React.FC = () => {
                         className="group bg-slate-800/50 border border-slate-700/60 rounded-xl p-6 shadow-lg hover:border-cyan-500/70 hover:bg-slate-700/70 hover:shadow-cyan-500/20 transition-all duration-300 ease-in-out transform hover:-translate-y-1"
                       >
                         <div className="flex items-start mb-3">
-                          <div className="bg-slate-700/50 group-hover:bg-cyan-500/20 p-2.5 rounded-lg mr-4 transition-colors duration-300">
+                          {" "}
+                          {/* Changed to items-start for multi-line titles */}
+                          <div className="bg-slate-700/50 group-hover:bg-cyan-500/20 p-2 rounded-lg mr-4 transition-colors duration-300">
                             <SolutionIcon className="w-6 h-6 text-emerald-400 group-hover:text-cyan-300 transition-colors duration-300 shrink-0" />
                           </div>
-                          <h3 className="text-xl font-semibold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 mt-1">
+                          <h3 className="text-xl font-semibold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 mt-0.5">
+                            {" "}
+                            {/* Added mt for alignment */}
                             {solution.title}
                           </h3>
                         </div>
@@ -267,6 +292,7 @@ const FinanceDetailPage: React.FC = () => {
                 </div>
               </motion.section>
 
+              {/* Challenges & Benefits Section */}
               <motion.section
                 variants={fadeIn}
                 className="grid md:grid-cols-2 gap-x-10 gap-y-12"
@@ -309,11 +335,12 @@ const FinanceDetailPage: React.FC = () => {
                 </div>
               </motion.section>
 
+              {/* Case Study Teaser Section */}
               {industryInfo.caseStudy && (
                 <motion.section variants={fadeIn}>
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 pb-3 border-b-2 border-cyan-500/40 flex items-center">
                     <FileText className="w-8 h-8 mr-3 text-cyan-400 shrink-0" />{" "}
-                    Success in {industryNameShort}
+                    Success in {industryInfo.name}
                   </h2>
                   <div className="bg-gradient-to-br from-sky-800/50 via-slate-800/40 to-emerald-800/50 p-8 rounded-xl shadow-2xl border border-sky-600/50 hover:border-sky-500 transition-colors">
                     <h3 className="text-2xl font-semibold text-white mb-3">
@@ -326,10 +353,10 @@ const FinanceDetailPage: React.FC = () => {
                       asChild
                       className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     >
-                      <Link to={industryInfo.caseStudy.link}>
+                      {/* <Link to={industryInfo.caseStudy.link}>
                         Read Full Case Study{" "}
                         <ArrowRight className="ml-2 w-4 h-4" />
-                      </Link>
+                      </Link> */}
                     </Button>
                   </div>
                 </motion.section>
@@ -338,39 +365,70 @@ const FinanceDetailPage: React.FC = () => {
 
             {/* --- RIGHT SIDEBAR (Enhanced) --- */}
             <motion.aside
-              className="lg:col-span-4 space-y-8 sticky top-24 self-start"
+              className="lg:col-span-4 space-y-8 sticky top-24 self-start" // Adjusted top
               variants={fadeIn}
             >
+              {/* Sidebar Block Wrapper Function (Optional, for consistency) */}
+              {/* const SidebarBlock: React.FC<{ title: string, icon: React.ElementType, children: React.ReactNode }> = ({ title, icon: Icon, children }) => ( ... ); */}
+
               <div className="bg-slate-800/60 p-6 rounded-xl border border-slate-700/50 shadow-lg backdrop-blur-sm hover:border-slate-600/70 transition-colors">
                 <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
                   <Lightbulb className="w-6 h-6 mr-3 text-cyan-400 shrink-0" />{" "}
-                  Why Us for {industryNameShort}?
+                  Why Us for {industryInfo.name.split(" ")[0]}?
                 </h3>
                 <ul className="space-y-3 text-sm text-slate-300/95">
-                  {industryInfo.whyPartnerPoints.map(
-                    (
-                      point,
-                      index // Using whyPartnerPoints
-                    ) => (
-                      <li key={index} className="flex items-center">
-                        <CheckCircle className="w-4 h-4 text-emerald-400/90 mr-2.5 shrink-0" />
-                        {point}
-                      </li>
-                    )
-                  )}
+                  {[
+                    "Deep industry-specific expertise.",
+                    "Focus on regulatory compliance & security.",
+                    "Scalable and future-proof solutions.",
+                    "Agile development & collaborative approach.",
+                    "Proven track record of successful delivery.",
+                    "Commitment to innovation & patient-centricity.",
+                  ].map((point, index) => (
+                    <li key={index} className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-emerald-400/90 mr-2.5 shrink-0" />
+                      {point}
+                    </li>
+                  ))}
                 </ul>
               </div>
 
-              <div className="bg-gradient-to-br from-emerald-700/80 via-sky-700/80 to-green-800/80 p-8 rounded-xl border border-transparent hover:border-sky-400/70 text-center shadow-2xl backdrop-blur-sm transition-all duration-300 group">
-                {" "}
-                {/* Adjusted gradient */}
+              {industryInfo.relatedServices &&
+                industryInfo.relatedServices.length > 0 && (
+                  <div className="bg-slate-800/60 p-6 rounded-xl border border-slate-700/50 shadow-lg backdrop-blur-sm hover:border-slate-600/70 transition-colors">
+                    <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
+                      <Briefcase className="w-6 h-6 mr-3 text-cyan-400 shrink-0" />{" "}
+                      Related Services
+                    </h3>
+                    <ul className="space-y-3">
+                      {industryInfo.relatedServices.map((service, index) => {
+                        const ServiceIcon = service.icon || LinkIcon;
+                        return (
+                          <li key={index}>
+                            <Link
+                              to={service.link}
+                              className="flex items-center text-sm text-slate-300 hover:text-cyan-300 transition-colors group"
+                            >
+                              <ServiceIcon className="w-4 h-4 text-cyan-500 group-hover:text-cyan-400 mr-2.5 shrink-0 transition-colors" />
+                              {service.name}
+                              <ArrowRight className="w-3.5 h-3.5 ml-auto text-slate-500 opacity-50 group-hover:opacity-100 group-hover:text-cyan-400 transition-all duration-200 transform group-hover:translate-x-0.5" />
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+
+              <div className="bg-gradient-to-br from-emerald-600/80 via-sky-600/80 to-sky-700/90 p-8 rounded-xl border border-transparent hover:border-sky-400/70 text-center shadow-2xl backdrop-blur-sm transition-all duration-300 group">
                 <MessageSquare className="w-12 h-12 text-sky-100 group-hover:text-white mx-auto mb-5 transition-colors duration-300 transform group-hover:scale-110" />
                 <h3 className="text-2xl font-bold text-white mb-3">
-                  Ready for FinTech Transformation?
+                  Ready to Innovate?
                 </h3>
                 <p className="text-sky-100/90 mb-6 text-sm">
-                  Discuss how our FinTech solutions can revolutionize your
-                  financial services and drive growth.
+                  Let's discuss how our tailored solutions can address your
+                  specific challenges and drive growth in the{" "}
+                  {industryInfo.name.toLowerCase()} sector.
                 </p>
                 <Button
                   asChild
@@ -384,13 +442,13 @@ const FinanceDetailPage: React.FC = () => {
               <div className="bg-slate-800/60 p-6 rounded-xl border border-slate-700/50 shadow-lg backdrop-blur-sm hover:border-slate-600/70 transition-colors">
                 <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
                   <Cpu className="w-6 h-6 mr-3 text-cyan-400 shrink-0" />{" "}
-                  Technologies We Master
+                  Technologies We Leverage
                 </h3>
                 <div className="flex flex-wrap gap-2.5">
                   {industryInfo.relevantTechnologies.map((tech) => (
                     <span
                       key={tech}
-                      className="bg-slate-700/80 text-cyan-300/90 px-3.5 py-2 rounded-lg text-xs font-medium border border-slate-600/70 hover:bg-slate-600/80 hover:text-cyan-200 hover:border-slate-500 transition-all duration-200 cursor-default"
+                      className="bg-slate-700/80 text-cyan-300/90 px-3 py-1.5 rounded-md text-xs font-medium border border-slate-600/70 hover:bg-slate-600/80 hover:text-cyan-200 hover:border-slate-500 transition-all duration-200 cursor-default"
                     >
                       {tech}
                     </span>
@@ -401,9 +459,9 @@ const FinanceDetailPage: React.FC = () => {
           </motion.div>
         </div>
       </main>
-{/*        <Footer />  */}
+      {/* <Footer /> */}
     </div>
   );
 };
 
-export default FinanceDetailPage;
+export default HealthcareDetailPage;
