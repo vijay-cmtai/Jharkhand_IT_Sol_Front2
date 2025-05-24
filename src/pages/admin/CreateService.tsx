@@ -1,3 +1,4 @@
+// src/pages/AdminCreateServicePage.tsx
 import React, {
   useState,
   ChangeEvent,
@@ -22,7 +23,7 @@ import {
   FileText as DescriptionIcon,
   RefreshCw,
   ListChecks,
-  Edit3, // Added for Edit button
+  Edit3,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils"; // Assuming you have this utility
@@ -30,24 +31,24 @@ import { AlertTriangle } from "lucide-react";
 
 // --- INTERFACES ---
 interface SubServiceFormData {
-  id: string;
-  _id?: string;
+  id: string; // For React key, client-side only
+  _id?: string; // For existing sub-services from backend (during edit)
   name: string;
   slug: string;
   description: string;
   imageUrl: File | null;
-  imageUrlPreview: string | null;
-  imagePath?: string;
+  imageUrlPreview: string | null; // Will store Data URL from FileReader
+  imagePath?: string; // For existing image path from backend
 }
 
 interface ServiceCategoryFormData {
-  _id?: string;
+  _id?: string; // For editing
   name: string;
   slug: string;
   description: string;
   mainImage: File | null;
-  mainImagePreview: string | null;
-  mainImagePath?: string;
+  mainImagePreview: string | null; // Will store Data URL from FileReader
+  mainImagePath?: string; // For existing image path from backend
   subServices: SubServiceFormData[];
   isActive: boolean;
 }
@@ -57,7 +58,7 @@ interface FetchedSubService {
   name: string;
   slug: string;
   description: string;
-  imageUrl: string;
+  imageUrl: string; // Path from backend
 }
 
 interface FetchedServiceCategory {
@@ -65,7 +66,7 @@ interface FetchedServiceCategory {
   name: string;
   slug: string;
   description: string;
-  mainImage: string;
+  mainImage: string; // Path from backend
   subServices: FetchedSubService[];
   isActive: boolean;
   createdAt: string;
@@ -118,18 +119,8 @@ const AdminCreateServicePage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const mainPreview = formData.mainImagePreview;
-    const subPreviews = (formData.subServices || []).map(
-      (s) => s.imageUrlPreview
-    );
-    return () => {
-      if (mainPreview) URL.revokeObjectURL(mainPreview);
-      subPreviews.forEach((p) => {
-        if (p) URL.revokeObjectURL(p);
-      });
-    };
-  }, [formData.mainImagePreview, formData.subServices]);
+  // No need for useEffect to revoke object URLs with FileReader
+  // Data URLs don't need manual revocation.
 
   const fetchAllServices = useCallback(async () => {
     setIsLoadingServices(true);
@@ -205,13 +196,12 @@ const AdminCreateServicePage: React.FC = () => {
   const handleMainImageFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormError(null);
     setFormSuccess(null);
-    if (formData.mainImagePreview)
-      URL.revokeObjectURL(formData.mainImagePreview);
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.size > 2 * 1024 * 1024) {
+        // 2MB limit
         setFormError("Main image is too large! Max 2MB.");
-        e.target.value = "";
+        e.target.value = ""; // Clear the file input
         setFormData((prev) => ({
           ...prev,
           mainImage: null,
@@ -219,11 +209,15 @@ const AdminCreateServicePage: React.FC = () => {
         }));
         return;
       }
-      setFormData((prev) => ({
-        ...prev,
-        mainImage: file,
-        mainImagePreview: URL.createObjectURL(file),
-      }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({
+          ...prev,
+          mainImage: file,
+          mainImagePreview: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -264,38 +258,46 @@ const AdminCreateServicePage: React.FC = () => {
     setFormSuccess(null);
     const file = e.target.files?.[0];
     const updatedSubServices = [...(formData.subServices || [])];
-    if (updatedSubServices[index]?.imageUrlPreview)
-      URL.revokeObjectURL(updatedSubServices[index].imageUrlPreview as string);
+
     if (file) {
       if (file.size > 1 * 1024 * 1024) {
+        // 1MB limit
         setFormError(
           `Image for sub-service #${index + 1} is too large! Max 1MB.`
         );
-        e.target.value = "";
-        if (updatedSubServices[index])
+        e.target.value = ""; // Clear the file input
+        if (updatedSubServices[index]) {
           updatedSubServices[index] = {
             ...updatedSubServices[index],
             imageUrl: null,
             imageUrlPreview: null,
           };
+        }
         setFormData((prev) => ({ ...prev, subServices: updatedSubServices }));
         return;
       }
-      if (updatedSubServices[index])
-        updatedSubServices[index] = {
-          ...updatedSubServices[index],
-          imageUrl: file,
-          imageUrlPreview: URL.createObjectURL(file),
-        };
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (updatedSubServices[index]) {
+          updatedSubServices[index] = {
+            ...updatedSubServices[index],
+            imageUrl: file,
+            imageUrlPreview: reader.result as string,
+          };
+        }
+        setFormData((prev) => ({ ...prev, subServices: updatedSubServices }));
+      };
+      reader.readAsDataURL(file);
     } else {
-      if (updatedSubServices[index])
+      if (updatedSubServices[index]) {
         updatedSubServices[index] = {
           ...updatedSubServices[index],
           imageUrl: null,
           imageUrlPreview: null,
         };
+      }
+      setFormData((prev) => ({ ...prev, subServices: updatedSubServices }));
     }
-    setFormData((prev) => ({ ...prev, subServices: updatedSubServices }));
   };
 
   const addSubService = () => {
@@ -310,9 +312,7 @@ const AdminCreateServicePage: React.FC = () => {
   const removeSubService = (index: number) => {
     setFormError(null);
     setFormSuccess(null);
-    const subToRemove = formData.subServices?.[index];
-    if (subToRemove?.imageUrlPreview)
-      URL.revokeObjectURL(subToRemove.imageUrlPreview);
+    // No need to revoke Data URL explicitly
     setFormData((prev) => ({
       ...prev,
       subServices: (prev.subServices || []).filter((_, i) => i !== index),
@@ -323,49 +323,59 @@ const AdminCreateServicePage: React.FC = () => {
     e.preventDefault();
     setFormError(null);
     setFormSuccess(null);
+
     if (
       !formData.name ||
       !formData.slug ||
       !formData.description ||
-      !formData.mainImage
+      !formData.mainImage // Ensure mainImage File object is present, not just preview
     ) {
       setFormError(
         "Please fill all required main service fields and upload a main image."
       );
       return;
     }
+
     const currentSubServices = formData.subServices || [];
     const filledSubServices = currentSubServices.filter(
       (sub) =>
         sub.name.trim() ||
         sub.slug.trim() ||
         sub.description.trim() ||
-        sub.imageUrl
+        sub.imageUrl // Check for File object
     );
+
     for (const [index, sub] of filledSubServices.entries()) {
       if (!sub.name || !sub.slug || !sub.description) {
         setFormError(
-          `Sub-service #${index + 1} is incomplete. Name, Slug, and Description are required if other fields are filled.`
+          `Sub-service #${index + 1} is incomplete. Name, Slug, and Description are required if other fields (like image) are filled.`
         );
         return;
       }
     }
+
     setIsSubmitting(true);
     const payload = new FormData();
     payload.append("name", formData.name);
     payload.append("slug", formData.slug);
     payload.append("description", formData.description);
     payload.append("isActive", String(formData.isActive));
-    if (formData.mainImage) payload.append("mainImage", formData.mainImage);
+
+    if (formData.mainImage) {
+      payload.append("mainImage", formData.mainImage);
+    }
+
     const subServicesMetadata = filledSubServices.map((sub) => ({
       name: sub.name,
       slug: sub.slug,
       description: sub.description,
     }));
     payload.append("subServicesData", JSON.stringify(subServicesMetadata));
+
     filledSubServices.forEach((sub, index) => {
-      if (sub.imageUrl)
+      if (sub.imageUrl) {
         payload.append(`subServiceImage_${index}`, sub.imageUrl);
+      }
     });
 
     try {
@@ -376,15 +386,18 @@ const AdminCreateServicePage: React.FC = () => {
       const responseData = await response
         .json()
         .catch(() => ({ message: "Invalid JSON response from server." }));
-      if (!response.ok)
+
+      if (!response.ok) {
         throw new Error(
           responseData.error ||
             responseData.message ||
             `Server error ${response.status}`
         );
+      }
+
       setFormSuccess("Service category created successfully!");
-      setFormData(initialServiceFormData);
-      fetchAllServices();
+      setFormData(initialServiceFormData); // Reset form, this will also clear previews
+      fetchAllServices(); // Refresh the list
       setTimeout(() => {
         setFormSuccess(null);
       }, 5000);
@@ -424,7 +437,7 @@ const AdminCreateServicePage: React.FC = () => {
         );
       }
       setFormSuccess(responseData.message || "Service deleted successfully!");
-      fetchAllServices();
+      fetchAllServices(); // Refresh the list
       setTimeout(() => {
         setFormSuccess(null);
       }, 3000);
@@ -445,9 +458,9 @@ const AdminCreateServicePage: React.FC = () => {
 
   const handleEditService = (serviceId: string) => {
     navigate(`/admin/edit-service/${serviceId}`);
-    console.log("Attempting to edit service with ID:", serviceId);
   };
 
+  // --- STYLING & VARIANTS (No changes here from your original) ---
   const pageContainerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5 } },
@@ -470,7 +483,6 @@ const AdminCreateServicePage: React.FC = () => {
   };
   const inputBaseClasses =
     "block w-full rounded-md border border-slate-600 bg-slate-700 text-slate-100 placeholder-slate-400 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 sm:text-sm";
-
   const formLabelClasses = "block text-sm font-medium text-slate-300 mb-1";
   const formLabelSmClasses = "block text-xs font-medium text-slate-300 mb-0.5";
   const inputIconClasses =
@@ -535,12 +547,10 @@ const AdminCreateServicePage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                 <div>
                   <label htmlFor="name" className={formLabelClasses}>
-                    {" "}
-                    Name <span className="text-red-400">*</span>{" "}
+                    Name <span className="text-red-400">*</span>
                   </label>
                   <div className="relative mt-1.5">
-                    {" "}
-                    <TypeIcon size={16} className={inputIconClasses} />{" "}
+                    <TypeIcon size={16} className={inputIconClasses} />
                     <input
                       type="text"
                       name="name"
@@ -550,17 +560,15 @@ const AdminCreateServicePage: React.FC = () => {
                       required
                       className={cn(inputBaseClasses, "pl-10")}
                       placeholder="e.g., Web Development"
-                    />{" "}
+                    />
                   </div>
                 </div>
                 <div>
                   <label htmlFor="slug" className={formLabelClasses}>
-                    {" "}
-                    Slug <span className="text-red-400">*</span>{" "}
+                    Slug <span className="text-red-400">*</span>
                   </label>
                   <div className="relative mt-1.5">
-                    {" "}
-                    <LinkIcon size={16} className={inputIconClasses} />{" "}
+                    <LinkIcon size={16} className={inputIconClasses} />
                     <input
                       type="text"
                       name="slug"
@@ -570,21 +578,19 @@ const AdminCreateServicePage: React.FC = () => {
                       required
                       className={cn(inputBaseClasses, "pl-10")}
                       placeholder="e.g., web-development"
-                    />{" "}
+                    />
                   </div>
                 </div>
               </div>
               <div>
                 <label htmlFor="description" className={formLabelClasses}>
-                  {" "}
-                  Description <span className="text-red-400">*</span>{" "}
+                  Description <span className="text-red-400">*</span>
                 </label>
                 <div className="relative mt-1.5">
-                  {" "}
                   <DescriptionIcon
                     size={16}
                     className={`${inputIconClasses} top-3.5`}
-                  />{" "}
+                  />
                   <textarea
                     name="description"
                     id="description"
@@ -597,7 +603,7 @@ const AdminCreateServicePage: React.FC = () => {
                       "pl-10 min-h-[100px] py-2.5"
                     )}
                     placeholder="Detailed description of the service category..."
-                  ></textarea>{" "}
+                  ></textarea>
                 </div>
               </div>
             </motion.div>
@@ -722,20 +728,14 @@ const AdminCreateServicePage: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4">
                       <div>
-                        {" "}
                         <label
                           htmlFor={`sub-name-${index}`}
                           className={formLabelSmClasses}
                         >
-                          {" "}
-                          Name <span className="text-red-400">*</span>{" "}
-                        </label>{" "}
+                          Name <span className="text-red-400">*</span>
+                        </label>
                         <div className="relative mt-1">
-                          {" "}
-                          <TypeIcon
-                            size={14}
-                            className={inputIconSmClasses}
-                          />{" "}
+                          <TypeIcon size={14} className={inputIconSmClasses} />
                           <input
                             type="text"
                             name="name"
@@ -750,24 +750,18 @@ const AdminCreateServicePage: React.FC = () => {
                               "pl-9 text-sm py-2"
                             )}
                             placeholder="e.g., UI/UX Design"
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                       </div>
                       <div>
-                        {" "}
                         <label
                           htmlFor={`sub-slug-${index}`}
                           className={formLabelSmClasses}
                         >
-                          {" "}
-                          Slug <span className="text-red-400">*</span>{" "}
-                        </label>{" "}
+                          Slug <span className="text-red-400">*</span>
+                        </label>
                         <div className="relative mt-1">
-                          {" "}
-                          <LinkIcon
-                            size={14}
-                            className={inputIconSmClasses}
-                          />{" "}
+                          <LinkIcon size={14} className={inputIconSmClasses} />
                           <input
                             type="text"
                             name="slug"
@@ -782,25 +776,22 @@ const AdminCreateServicePage: React.FC = () => {
                               "pl-9 text-sm py-2"
                             )}
                             placeholder="e.g., ui-ux-design"
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div>
-                      {" "}
                       <label
                         htmlFor={`sub-description-${index}`}
                         className={formLabelSmClasses}
                       >
-                        {" "}
-                        Description <span className="text-red-400">*</span>{" "}
-                      </label>{" "}
+                        Description <span className="text-red-400">*</span>
+                      </label>
                       <div className="relative mt-1">
-                        {" "}
                         <DescriptionIcon
                           size={14}
                           className={`${inputIconSmClasses} top-2.5`}
-                        />{" "}
+                        />
                         <textarea
                           name="description"
                           id={`sub-description-${index}`}
@@ -815,17 +806,15 @@ const AdminCreateServicePage: React.FC = () => {
                             "pl-9 min-h-[70px] text-sm py-2"
                           )}
                           placeholder="Short description..."
-                        ></textarea>{" "}
-                      </div>{" "}
+                        ></textarea>
+                      </div>
                     </div>
                     <div>
-                      {" "}
                       <label className={formLabelSmClasses}>
-                        {" "}
                         Image{" "}
                         <span className="text-xs text-slate-400">
                           (Optional, max 1MB)
-                        </span>{" "}
+                        </span>
                       </label>
                       <div
                         className={cn(
@@ -848,42 +837,39 @@ const AdminCreateServicePage: React.FC = () => {
                           htmlFor={`sub-image-upload-${index}`}
                           className="relative cursor-pointer bg-slate-600 hover:bg-slate-500 rounded-md font-medium text-white text-xs px-3.5 py-2 transition-colors shadow-sm"
                         >
-                          {" "}
                           <span>
                             {sub.imageUrlPreview
                               ? "Change Image"
                               : "Upload Image"}
-                          </span>{" "}
+                          </span>
                           <input
                             id={`sub-image-upload-${index}`}
-                            name={`subServiceImage_${index}`}
+                            name={`subServiceImage_${index}`} // Name attribute is important for FormData
                             type="file"
                             className="sr-only"
                             onChange={(e) =>
                               handleSubServiceImageChange(index, e)
                             }
                             accept="image/png, image/jpeg, image/gif, image/webp"
-                          />{" "}
+                          />
                         </label>
                         {sub.imageUrlPreview && (
                           <button
                             type="button"
                             onClick={() => {
                               const s = [...(formData.subServices || [])];
-                              if (s[index]?.imageUrlPreview)
-                                URL.revokeObjectURL(
-                                  s[index].imageUrlPreview as string
-                                );
-                              if (s[index])
+                              if (s[index]) {
                                 s[index] = {
                                   ...s[index],
                                   imageUrl: null,
                                   imageUrlPreview: null,
                                 };
+                              }
                               setFormData((prev) => ({
                                 ...prev,
                                 subServices: s,
                               }));
+                              // Reset the file input visually
                               const fileInput = document.getElementById(
                                 `sub-image-upload-${index}`
                               ) as HTMLInputElement;
@@ -909,9 +895,8 @@ const AdminCreateServicePage: React.FC = () => {
                 onClick={addSubService}
                 className="mt-4 inline-flex items-center px-4 py-2.5 border border-dashed border-cyan-700 hover:border-cyan-500 text-xs font-medium rounded-lg text-cyan-300 hover:text-cyan-100 hover:bg-cyan-700/20 transition-all duration-200 shadow-sm hover:shadow-md"
               >
-                {" "}
                 <PlusCircle size={16} className="mr-2" /> Add Sub-Service /
-                Offering{" "}
+                Offering
               </button>
             </motion.div>
 
@@ -1010,12 +995,10 @@ const AdminCreateServicePage: React.FC = () => {
                       {service.name}
                     </h3>
                     <p className="text-xs text-slate-400">
-                      {" "}
-                      Slug: {service.slug}{" "}
+                      Slug: {service.slug}
                     </p>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      {" "}
-                      Sub-services: {service.subServices.length}{" "}
+                      Sub-services: {service.subServices.length}
                     </p>
                     <p
                       className={cn(
