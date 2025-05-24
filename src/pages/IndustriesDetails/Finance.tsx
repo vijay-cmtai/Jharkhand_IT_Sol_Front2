@@ -326,10 +326,10 @@ const FinanceDetailPage: React.FC = () => {
                       asChild
                       className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     >
-                      <Link to={industryInfo.caseStudy.link}>
+                      {/* <Link to={industryInfo.caseStudy.link}>
                         Read Full Case Study{" "}
                         <ArrowRight className="ml-2 w-4 h-4" />
-                      </Link>
+                      </Link> */}
                     </Button>
                   </div>
                 </motion.section>
@@ -401,7 +401,7 @@ const FinanceDetailPage: React.FC = () => {
           </motion.div>
         </div>
       </main>
-{/*       <Footer />  */}
+      <Footer /> {/* Re-enabled Footer */}
     </div>
   );
 };
