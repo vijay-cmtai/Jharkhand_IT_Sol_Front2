@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import Vedio1 from "../assets/Vedio1.mp4";
 
 const EnhancedHero = () => {
   // Animation Variants (remain largely the same)
@@ -207,10 +208,7 @@ const EnhancedHero = () => {
                 key="hero-video-main-corrected"
                 poster="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=70&blend=000000&bm=multiply&bs=inherit&h=563"
               >
-                <source
-                  src="https://videos.pexels.com/video-files/3209828/3209828-hd_1280_720_25fps.mp4"
-                  type="video/mp4"
-                />
+                <source src={Vedio1} type="video/mp4" />
                 <source
                   src="https://static.vecteezy.com/system/resources/previews/004/149/874/mp4/abstract-plexus-geometrical-shapes-connection-and-web-concept-digital-communication-and-technology-network-background-video.mp4"
                   type="video/mp4"
