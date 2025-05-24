@@ -370,7 +370,7 @@ const UnifiedNavbar: React.FC = () => {
               className="text-white hover:text-cyan-400 transition-colors font-medium flex items-center" // Added flex items-center
             >
               <HomeIcon size={16} className="mr-1.5" /> {/* Added HomeIcon */}
-              Home
+{/*               Home */}
             </Link>
             <Link
               to="/company"
