@@ -32,13 +32,16 @@ import {
   ChevronUp,
   Award,
   ArrowRight,
-  Video, // Icon for video
+  // Video, // Icon for video - REMOVED as per request
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils"; // Not used in this file, can be removed if not used elsewhere
 import UnifiedNavbar from "../components/UnifiedNavbar";
 import Footer from "../components/Footer";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
+
+// --- ADDED: Import local video ---
+import localBannerVideo from "../assets/vedio2.mp4"; // Adjust path if your video is elsewhere or named differently
 
 // --- INTERFACES ---
 interface BackendSubService {
@@ -71,8 +74,8 @@ const BASE_URL = "https://jharkhand-it-sol-back1.onrender.com";
 const API_SERVICES_URL = `${BASE_URL}/services`;
 const API_ALL_SERVICES_URL = `${BASE_URL}/services/find`;
 
-const DEFAULT_BANNER_VIDEO_URL =
-  "https://videos.pexels.com/video-files/854006/854006-hd_1280_720_25fps.mp4";
+// const DEFAULT_BANNER_VIDEO_URL =
+//   "https://videos.pexels.com/video-files/854006/854006-hd_1280_720_25fps.mp4"; // Not needed if always using local
 
 const sampleFaqs = [
   {
@@ -212,7 +215,7 @@ const ServiceDetailPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setBannerVideoError(false);
+    setBannerVideoError(false); // Reset banner error on slug change
 
     const fetchServiceDetails = async () => {
       if (!serviceSlug) {
@@ -238,6 +241,7 @@ const ServiceDetailPage: React.FC = () => {
               ? data.mainImage
               : `${BASE_URL}/${data.mainImage.startsWith("/") ? data.mainImage.substring(1) : data.mainImage}`
             : undefined,
+          // bannerVideoUrl is still processed but localBannerVideo will take precedence in render
           bannerVideoUrl: data.bannerVideoUrl
             ? data.bannerVideoUrl.startsWith("http")
               ? data.bannerVideoUrl
@@ -328,7 +332,7 @@ const ServiceDetailPage: React.FC = () => {
     autoplaySpeed: 4000,
     pauseOnHover: true,
     arrows: false,
-    rtl: true,
+    rtl: true, // Consider if RTL is always desired
     responsive: [
       {
         breakpoint: 1024,
@@ -391,8 +395,9 @@ const ServiceDetailPage: React.FC = () => {
     );
   }
 
-  const currentBannerVideoUrl =
-    serviceDetails.bannerVideoUrl || DEFAULT_BANNER_VIDEO_URL;
+  // --- CHANGED: Use localBannerVideo first ---
+  // const currentBannerVideoUrl =
+  //   serviceDetails.bannerVideoUrl || DEFAULT_BANNER_VIDEO_URL; // Old logic
 
   return (
     <div className="bg-slate-950 text-slate-300 min-h-screen antialiased flex flex-col">
@@ -406,28 +411,51 @@ const ServiceDetailPage: React.FC = () => {
           variants={fadeIn}
         >
           <div className="absolute inset-0 z-0">
-            {!bannerVideoError && currentBannerVideoUrl ? (
+            {/* --- MODIFIED VIDEO LOGIC --- */}
+            {!bannerVideoError && localBannerVideo ? (
               <video
-                src={currentBannerVideoUrl}
-                poster={serviceDetails.mainImageUrl || undefined} // Display main image while video loads
+                src={localBannerVideo} // Use imported local video
+                poster={serviceDetails.mainImageUrl || undefined}
                 autoPlay
                 loop
                 muted
-                playsInline // Important for iOS autoplay
+                playsInline
+                className="w-full h-full object-cover opacity-25" // Adjust opacity as needed
+                onError={() => {
+                  console.warn("Local banner video failed to load.");
+                  setBannerVideoError(true); // Fallback if local video also fails
+                }}
+                aria-label={`${serviceDetails.name} background video`}
+              >
+                {/* It's good practice to provide a source tag for MP4 */}
+                <source src={localBannerVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : !bannerVideoError && serviceDetails.bannerVideoUrl ? ( // Fallback to service-specific URL
+              <video
+                src={serviceDetails.bannerVideoUrl}
+                poster={serviceDetails.mainImageUrl || undefined}
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="w-full h-full object-cover opacity-25"
-                onError={() => setBannerVideoError(true)}
+                onError={() => {
+                  console.warn("Service-specific banner video failed to load.");
+                  setBannerVideoError(true); // Fallback to image if this also fails
+                }}
                 aria-label={`${serviceDetails.name} background video`}
               />
-            ) : serviceDetails.mainImageUrl ? (
+            ) : serviceDetails.mainImageUrl ? ( // Fallback to image if no video works or error occurs
               <img
                 src={serviceDetails.mainImageUrl}
                 alt={`${serviceDetails.name} abstract background`}
-                className="w-full h-full object-cover opacity-15 blur-sm"
+                className="w-full h-full object-cover opacity-15 blur-sm" // Adjust opacity/blur
               />
             ) : (
+              // Ultimate fallback to a solid color
               <div className="w-full h-full bg-slate-800"></div>
             )}
-            {/* Gradient overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/80 to-sky-900/40"></div>
           </div>
 
@@ -437,12 +465,15 @@ const ServiceDetailPage: React.FC = () => {
               className="max-w-3xl mx-auto text-center"
               variants={staggerContainer}
             >
+              {/* --- REMOVED VIDEO ICON ---
               <motion.div variants={fadeIn} className="mb-4">
                 <Video className="w-12 h-12 text-cyan-400 mx-auto" />
               </motion.div>
+              */}
               <motion.h1
                 variants={fadeIn}
-                className="text-4xl sm:text-5xl lg:text-7xl font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500"
+                // ADDED: Margin top to compensate for removed icon space, if needed
+                className="text-4xl sm:text-5xl lg:text-7xl font-black mb-6 mt-4 sm:mt-0 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500"
               >
                 {serviceDetails.name}
               </motion.h1>
@@ -461,6 +492,7 @@ const ServiceDetailPage: React.FC = () => {
           </div>
         </motion.section>
 
+        {/* ... (rest of the component remains the same) ... */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start"
@@ -961,6 +993,7 @@ const ServiceDetailPage: React.FC = () => {
               className="lg:col-span-4 space-y-10 sticky top-24 self-start"
               variants={fadeIn}
             >
+              {/* ... (Sidebar content remains the same) ... */}
               <motion.div
                 initial="hidden"
                 whileInView="visible"
