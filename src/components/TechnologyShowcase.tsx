@@ -2,12 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import Techstack from "../assets/TechStack.avif";
-// Assuming MainNavbar and Footer are handled by a global Layout component
-// import  MainNavbar  from "@/components/MainNavbar";
-// import Footer from "@/components/Footer"
+import Techstack from "../assets/TechStack.avif"; // Make sure this path is correct
 
 const TechnologyShowcase = () => {
+  // REDUCED to 12 technologies for 3 rows (4 cards per row)
   const technologies = [
     {
       icon: "https://cdn.iconscout.com/icon/free/png-256/free-react-1-282599.png",
@@ -49,6 +47,30 @@ const TechnologyShowcase = () => {
       name: "Java",
       description: "Object-oriented programming language",
     },
+    {
+      icon: "https://cdn.iconscout.com/icon/free/png-256/free-docker-226091.png",
+      name: "Docker",
+      description:
+        "Containerization platform for building and shipping applications",
+    },
+    {
+      icon: "https://cdn.iconscout.com/icon/free/png-256/free-kubernetes-2-1175094.png",
+      name: "Kubernetes",
+      description:
+        "System for automating deployment and management of containerized applications",
+    },
+    {
+      icon: "https://cdn.iconscout.com/icon/free/png-256/free-aws-1869025-1583149.png",
+      name: "AWS",
+      description:
+        "Amazon Web Services, a comprehensive cloud computing platform",
+    },
+    {
+      icon: "https://cdn.iconscout.com/icon/free/png-256/free-flutter-2038877-1720090.png",
+      name: "Flutter",
+      description:
+        "Google's UI toolkit for building natively compiled applications",
+    },
   ];
 
   const containerVariants = {
@@ -74,7 +96,6 @@ const TechnologyShowcase = () => {
   };
 
   return (
-    // Removed fragment and MainNavbar/Footer, assuming they are in a global Layout
     <section className="py-16 md:py-24 bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 md:mb-16">
@@ -99,6 +120,7 @@ const TechnologyShowcase = () => {
           </motion.p>
         </div>
 
+        {/* The parent div with items-stretch is important for height alignment */}
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-stretch">
           {/* Left Column: Tech Grid */}
           <motion.div
@@ -109,7 +131,7 @@ const TechnologyShowcase = () => {
             viewport={{ once: true }}
           >
             <motion.div
-              className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-6"
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" // gap-4 (1rem) * 2 gaps = 2rem total vertical gap for 3 rows
               variants={containerVariants}
               initial="hidden"
               whileInView="show"
@@ -118,47 +140,29 @@ const TechnologyShowcase = () => {
               {technologies.map((tech, index) => (
                 <motion.div
                   key={index}
-                  // Add group-hover:z-30 to bring the hovered card and its tooltip to the front
-                  // The non-hovered items will have a default z-index or a lower one.
-                  // Also ensure the parent grid doesn't create a restrictive stacking context without z-index.
-                  className="group relative hover:z-30" // Added hover:z-30
+                  className="group relative hover:z-30"
                   variants={itemVariants}
-                  whileHover={{ scale: 1.05, y: -8 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  {/* Card Content */}
-                  <div className="bg-slate-800 p-5 rounded-xl w-full h-40 sm:h-44 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-cyan-500/25 border border-slate-700 hover:border-cyan-500/70 transition-all duration-300">
-                    {" "}
-                    {/* Adjusted h-44 to be consistent */}
+                  <div className="bg-slate-800 p-3 rounded-xl w-full h-36 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-cyan-500/25 border border-slate-700 hover:border-cyan-500/70 transition-all duration-300">
                     <img
                       src={tech.icon}
                       alt={tech.name}
-                      className="w-12 h-12 sm:w-14 sm:h-14 object-contain mb-3 sm:mb-4" // Made icon size slightly responsive
+                      className="w-10 h-10 object-contain mb-2"
                     />
-                    <h3 className="text-sm sm:text-base font-semibold text-white">
-                      {" "}
-                      {/* Made text size slightly responsive */}
+                    <h3 className="text-sm font-semibold text-white">
                       {tech.name}
                     </h3>
                   </div>
-
-                  {/* Tooltip - Keep z-20, its parent's z-index on hover is what matters more */}
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-[calc(100%+10px)] w-56 bg-slate-700 rounded-lg shadow-2xl p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20 group-hover:delay-75">
-                    {" "}
-                    {/* Increased padding, shadow, slightly reduced translate-y, added delay */}
                     <div className="text-base font-semibold text-white mb-1.5">
-                      {" "}
-                      {/* Increased font size */}
                       {tech.name}
                     </div>
                     <div className="text-xs text-gray-200 leading-normal">
-                      {" "}
-                      {/* Brighter text, adjusted leading */}
                       {tech.description}
                     </div>
-                    {/* Tooltip Arrow */}
-                    <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-slate-700 rotate-45"></div>{" "}
-                    {/* Adjusted arrow size and position */}
+                    <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-slate-700 rotate-45"></div>
                   </div>
                 </motion.div>
               ))}
@@ -173,14 +177,27 @@ const TechnologyShowcase = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-blue-900/30 h-full min-h-[350px] md:min-h-full">
-              {" "}
-              {/* Ensure min-height for image container */}
+            {/*
+              To make the image match the height of the 3 rows of cards:
+              Card height = h-36 (9rem or 144px)
+              Number of rows = 3
+              Gap between rows = gap-4 (1rem or 16px)
+              Number of gaps = 2
+
+              Total height of cards content = (3 * card_height) + (2 * gap_height)
+                                          = (3 * 9rem) + (2 * 1rem)
+                                          = 27rem + 2rem = 29rem
+                                          = (3 * 144px) + (2 * 16px)
+                                          = 432px + 32px = 464px
+              We can set min-h-[464px] or min-h-[29rem] for the image container.
+              Or, rely on h-full and items-stretch from the parent.
+            */}
+            <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-blue-900/30 h-full">
               <img
                 src={Techstack}
                 alt="Modern Web Development Technology Stack"
-                className="w-full h-full object-cover"
-                loading="lazy" // Added lazy loading
+                className="w-full h-full object-cover" // object-cover will ensure the image covers the area, might crop
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent flex flex-col justify-end p-6">
                 <div>
@@ -199,7 +216,7 @@ const TechnologyShowcase = () => {
 
         <div className="text-center mt-12 md:mt-16">
           <Link
-            to="/FullTechStack" // Corrected from "/FullTechStack" to common convention
+            to="/FullTechStack"
             className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
           >
             Explore Our Full Tech Stack
