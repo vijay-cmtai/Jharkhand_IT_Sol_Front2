@@ -854,12 +854,12 @@ const ServiceDetailPage: React.FC = () => {
                       asChild
                       className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
                     >
-                      <Link
+                      {/* <Link
                         to={`/case-studies/connectlogistics-${serviceDetails.slug}`}
                       >
                         Read Full Case Study{" "}
                         <ArrowRight className="ml-2 w-4 h-4" />
-                      </Link>
+                      </Link> */}
                     </Button>
                   </div>
                 </motion.div>
