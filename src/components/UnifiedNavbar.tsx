@@ -163,7 +163,7 @@ const localIndustriesDataArray: LocalIndustryDataItem[] = [
   },
   {
     id: "manufacturing",
-    name: "Manufacturing & IoT",
+    name: "Manufacturing ",
     icon: Factory,
     description: "Driving efficiency and innovation...",
     imageUrl: I7,
